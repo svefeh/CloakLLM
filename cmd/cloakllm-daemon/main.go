@@ -117,7 +117,12 @@ func handleProxyRequest(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"error": "Failed to connect to the external proxy"}`, http.StatusBadGateway)
 		return
 	}
-	defer resp.Body.Close()
+
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	// 8. Read the proxy's response
 	respBytes, _ := io.ReadAll(resp.Body)

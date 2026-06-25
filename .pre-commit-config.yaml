@@ -19,3 +19,4 @@ repos:
     rev: v3.27.0
     hooks:
       - id: commitizen
+        args: ["--commit-msg-file"]

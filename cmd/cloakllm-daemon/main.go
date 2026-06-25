@@ -78,7 +78,7 @@ func handleProxyRequest(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// FORCING non-streaming mode:
-		// We override the 'stream' parameter to false to ensure a simple request-response 
+		// We override the 'stream' parameter to false to ensure a simple request-response
 		// cycle, which is required by the current proxy architecture.
     	llmPayload["stream"] = false
 	}
@@ -137,7 +137,9 @@ func handleProxyRequest(w http.ResponseWriter, r *http.Request) {
 	// 10. Return the plaintext JSON response to the local frontend
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(resp.StatusCode)
-	w.Write(decryptedBytes)
+	if _, err := w.Write(decryptedBytes); err != nil {
+		log.Printf("Error writing decrypted response to client: %v", err)
+	}
 }
 
 // mockModelsResponse provides a static OpenAI-compatible response.
@@ -157,7 +159,9 @@ func mockModelsResponse(w http.ResponseWriter) {
 	}`
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(mockResponse))
+	if _, err := w.Write([]byte(mockResponse)); err != nil {
+		log.Printf("Error writing mock response to client: %v", err)
+	}
 }
 
 func main() {
@@ -171,7 +175,7 @@ func main() {
 	port := ":8080"
 	fmt.Printf("[CloakLLM] Daemon initialized and listening on http://localhost%s\n", port)
 	fmt.Printf("[CloakLLM] Routing traffic securely to %s\n", ProxyURL)
-	
+
 	// 3. Start the daemon
 	log.Fatal(http.ListenAndServe(port, nil))
 }

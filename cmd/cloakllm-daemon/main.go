@@ -69,7 +69,7 @@ func handleProxyRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var llmPayload interface{}
+	var llmPayload map[string]interface{}
 	// Only parse JSON if the body is not empty (GET requests usually have no body)
 	if len(bodyBytes) > 0 {
 		if err := json.Unmarshal(bodyBytes, &llmPayload); err != nil {

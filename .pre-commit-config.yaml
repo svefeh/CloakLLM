@@ -16,7 +16,7 @@ repos:
         args: [--timeout=5m]
 
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.27.0
+    rev: v4.16.4
     hooks:
       - id: commitizen
-        args: ["--commit-msg-file"]
+        args: ["-l", "0", "--commit-msg-file"]

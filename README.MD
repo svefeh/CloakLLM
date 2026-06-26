@@ -4,7 +4,7 @@
 [![Lint and Quality Checks](https://github.com/svefeh/cloakllm/actions/workflows/lint.yml/badge.svg)](https://github.com/svefeh/cloakllm/actions/workflows/lint.yml)
 [![Dependabot Enabled](https://img.shields.io/badge/Dependabot-enabled-0366d6?logo=dependabot)](https://github.com/svefeh/cloakllm/network/updates)
 
-**CloakLLM** is a stateless, end-to-end encrypted (E2EE) API routing bridge. It allows developers to safely tunnel sensitive JSON payloads (such as LLM prompts and API tokens) through untrusted intermediate networks using robust AES-256-GCM encryption. 
+**CloakLLM** is a stateless, end-to-end encrypted (E2EE) API routing bridge. It allows developers to safely tunnel sensitive JSON payloads (such as LLM prompts and API tokens) through untrusted intermediate networks using robust AES-256-GCM encryption.
 
 By encrypting the entire routing package including the target endpoint, API token, and payload CloakLLM ensures that intermediary nodes, network proxies, or deep packet inspection (DPI) appliances cannot read or manipulate your data. It acts as a drop-in, locally hosted OpenAI-compatible endpoint for UI frontends like Open WebUI.
 
@@ -19,16 +19,16 @@ CloakLLM splits the routing process into two tightly coupled, stateless componen
 
 ### Traffic Flow
 ```text
-[ Open WebUI ] 
+[ Open WebUI ]
       │ (Plaintext JSON to localhost:8080)
       ▼
-[ CloakLLM Local Daemon ] 
+[ CloakLLM Local Daemon ]
       │ (AES-GCM Encrypted Payload via HTTPS POST)
       ▼
 [ Intermediate Network / DPI Firewall ]  <-- Traffic appears as opaque binary/hex data
       │
       ▼
-[ CloakLLM Server Proxy (endpoint.cgi) ] 
+[ CloakLLM Server Proxy (endpoint.cgi) ]
       │ (Decrypts and forwards via HTTPS)
       ▼
 [ Target API (e.g., Google Gemini / OpenAI) ]
@@ -69,7 +69,7 @@ cosign verify \
 Before deploying, ensure your environment meets these requirements:
 * **Local Machine / Pod:** [Go 1.22+](https://go.dev/dl/) (if building from source) and [Podman](https://podman.io/) (for running the container).
 * **Remote Server:** A web server supporting **CGI scripts** (e.g., Apache).
-* **Dependencies (Server):** The Python environment on the remote server must have the `cryptography` library installed. 
+* **Dependencies (Server):** The Python environment on the remote server must have the `cryptography` library installed.
   * *Tip:* If you don't have root access on the server, you can install the library locally in your home directory using `pip install --target=$HOME/python_libs cryptography` and prepend this path in the shebang line of `endpoint.cgi`.
 * **Network:** Outbound HTTPS connectivity from your server proxy to the upstream LLM provider (e.g., Google's APIs).
 
@@ -86,11 +86,11 @@ The most robust way to run the local daemon is via the official container image 
 ```bash
 # Set your environment variables (Configured for Google Gemini API)
 export CLOAK_SHARED_KEY="YOUR_64_CHARACTER_HEX_KEY"
-export CLOAK_PROXY_URL="[https://your-domain.com/cgi-bin/api_health.cgi](https://your-domain.com/cgi-bin/api_health.cgi)"
+export CLOAK_PROXY_URL="https://your-domain.com/cgi-bin/api_health.cgi"
 
 # Using Google's official OpenAI-compatible endpoints for Gemini
-export CLOAK_TARGET_API="[https://generativelanguage.googleapis.com/v1beta/openai/chat/completions](https://generativelanguage.googleapis.com/v1beta/openai/chat/completions)"
-export CLOAK_MODELS_API="[https://generativelanguage.googleapis.com/v1beta/openai/models](https://generativelanguage.googleapis.com/v1beta/openai/models)"
+export CLOAK_TARGET_API="https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
+export CLOAK_MODELS_API="https://generativelanguage.googleapis.com/v1beta/openai/models"
 
 # Run the container using Podman
 podman run -d \
@@ -128,7 +128,7 @@ pipx install pre-commit
 pipx install commitizen
 
 # Clone the repository
-git clone [https://github.com/svefeh/cloakllm.git](https://github.com/svefeh/cloakllm.git)
+git clone https://github.com/svefeh/cloakllm.git
 cd cloakllm
 
 # Initialize the Git hooks
@@ -154,7 +154,7 @@ If you prefer to compile the daemon from source or build the OCI container local
 
 ```bash
 # Clone the repository
-git clone [https://github.com/svefeh/cloakllm.git](https://github.com/svefeh/cloakllm.git)
+git clone https://github.com/svefeh/cloakllm.git
 cd cloakllm
 
 # Build the binary locally for Linux
